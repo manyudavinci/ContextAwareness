@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.tbs"
+    android:versionCode="2"
+    android:versionName="2.12" >
+    
+    
+     <!-- REQUEST GENERAL PERMISSIONS FOR MAIN APP FUNCTIONALITY -->
+    
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+     <!-- TODO: REMOVE! for live version	
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+	-->
+    <!-- DEFINE REQUIRED FEATURES FOR LOCATION SENSORS -->
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="true" />
+
+    <!-- REQUEST ACCESS TO AUDIO AND VIDEO FOR AMBIENCE SENSORS -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- DEFINE REQUIRED FEATURES FOR AMBIENCE SENSORS -->
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="true" />
+    <!-- IMPLIED BY PERMISSION CAMERA, BUT NOT REQUIRED -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <!-- REQUEST ACCESS TO GENERAL PHONE STATE INFORMATION FOR PHONE STATE SENSORS -->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- DEFINE REQUIRED FEATURES FOR PHONE STATE SENSORS -->
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="true" />
+    <!-- IMPLIED BY PERMISSION PROCESS OUTGOING_CALLS, BUT NOT REQUIRED -->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <!-- REQUEST ACCESS TO NETWORKING FEATURES FOR NETWORK SCAN SENSORS -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.NFC" />
+    <!-- DEFINE REQUIRED FEATURES FOR NETWORK SCAN SENSORS -->
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
+    <!-- IMPLIED BY PERMISSION NFC, BUT NOT REQUIRED -->
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
+
+    <!-- REQUEST PERMISSION TO RECEIVE PUSHED (GCM) MESSAGES -->
+    <uses-permission android:name="nl.sense_os.demo.permission.GCM_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!-- DEFINE OUR OWN GCM PERMISSION -->
+    <permission
+        android:name="nl.sense_os.demo.permission.GCM_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:name="nl.sense_os.platform.SenseApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.tbs.LoginActivity"
+            android:label="@string/app_name" >
+           
+        </activity>
+
+        <!-- MAIN SERVICE THAT MANAGES SENSING -->
+        <service
+            android:name="nl.sense_os.service.SenseService"
+            android:exported="false" >
+            <intent-filter>
+
+                <!-- MAKE SURE YOU USE UNIQUE ACTIONS FOR YOUR OWN APP (SEE res/strings.xml) -->
+                <action android:name="com.example.Tbs.SENSE_SERVICE" />
+            </intent-filter>
+        </service>
+
+        <!-- SERVICE TO BUFFER AND SEND DATA TO COMMONSENSE -->
+        <service
+            android:name="nl.sense_os.service.MsgHandler"
+            android:exported="false" >
+            <intent-filter>
+
+                <!-- MAKE SURE YOU USE UNIQUE ACTIONS FOR YOUR OWN APP (SEE res/strings.xml) -->
+                <action android:name="com.example.Tbs.NEW_DATA" />
+                <action android:name="com.example.Tbs.SEND_DATA" />
+            </intent-filter>
+        </service>
+
+        <!-- SERVICE THAT CHECKS SENSOR REGISTRATION WITH COMMONSENSE -->
+        <service android:name="nl.sense_os.service.commonsense.DefaultSensorRegistrationService" />
+        
+        <service android:name="nl.sense_os.service.states.EpiStateMonitor" />
+        <service android:name="nl.sense_os.service.push.GCMReceiver" />
+        <service android:name="nl.sense_os.service.configuration.ConfigurationService" />
+                <!-- DUMMY SERVICE TO HANDLE CHANGES IN THE SENSE STATE (DOES NOTHING BY DEFAULT) -->
+        <service
+            android:name="nl.sense_os.service.appwidget.DummyAppWidgetService"
+            android:exported="false" >
+            <intent-filter>
+
+                <!-- MAKE SURE YOU USE UNIQUE ACTIONS FOR YOUR OWN APP (SEE res/strings.xml) -->
+                <action android:name="com.example.Tbs.UPDATE_APP_WIDGET" />
+            </intent-filter>
+        </service>
+
+        <!-- BROADCAST RECEIVER THAT WAKES UP THE APP AGAIN WHEN THE PHONE REBOOTS -->
+        <receiver
+            android:name="nl.sense_os.service.BootRx"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+        <!-- BROADCAST RECEIVER THAT MAKES SURE THE SENSE SERVICE IS RESTARTED IF IT IS KILLED -->
+        <receiver
+            android:name="nl.sense_os.service.AliveChecker"
+            android:exported="false" >
+            <intent-filter>
+
+                <!-- MAKE SURE YOU USE UNIQUE ACTIONS FOR YOUR OWN APP (SEE res/strings.xml) -->
+                <action android:name="com.example.Tbs.CHECK_ALIVE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- BROADCAST RECEIVER FOR CHANGES IN THE NETWORK STATE -->
+        <receiver
+            android:name="nl.sense_os.service.NetworkMonitor"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- BROADCAST RECEIVER THAT SCHEDULES PERIODIC TRANSMITS OF BUFFERED SENSOR DATA -->
+        <receiver
+            android:name="nl.sense_os.service.DataTransmitter"
+            android:exported="false" >
+            <intent-filter>
+
+                <!-- MAKE SURE YOU USE UNIQUE ACTIONS FOR YOUR OWN APP (SEE res/strings.xml) -->
+                <action android:name="com.example.Tbs.TRANSMIT_DATA" />
+            </intent-filter>
+        </receiver>
+        <!-- BROADCAST RECEIVER THAT SCHEDULES PERIODIC CHECK ON GPS  -->
+        
+        <receiver
+        android:name = "com.example.tbs.TbsBroadcast">
+            
+        	 <intent-filter>
+            	<action android:name = "com.example.tbs.GPSSETTINGS"/>
+            </intent-filter>
+		 </receiver>
+		 
+        <!-- BROADCAST RECEIVER THAT SCHEDULES PERIODIC CHECK ON INTERNET -->
+        
+        <receiver
+         android:name = "com.example.tbs.TbsBroadcastInternet">
+        	<intent-filter>
+            	<action android:name = "com.example.tbs.INTERNETSETTINGS"/>
+            </intent-filter>
+		 </receiver>
+		 
+         <!-- BROADCAST RECEIVER THAT SCHEDULES PERIODIC CHECK ON BOOT -->
+         <receiver android:name="com.example.tbs.TbsBoot" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>           
+        </receiver>
+		 
+          <!-- BROADCAST RECEIVER THAT SCHEDULES PERIODIC CHECK ON MOCKLOCATIONS -->
+        
+        <receiver
+         android:name = "com.example.tbs.TbsBroadcastMocklocations">
+        	<intent-filter>
+            	<action android:name = "com.example.tbs.MOCKLOCATIONS"/>
+            </intent-filter>
+		 </receiver> 
+         <receiver android:name="nl.sense_os.service.scheduler.ExecutionAlarmReceiver" />
+         
+         <!-- BROADCAST RECEIVER THAT SCHEDULES PERIODIC CHECK ON PLANNING SENSOR -->
+          <service
+            android:name="com.example.tbs.services.PlanService"
+            android:exported="false" >
+            <intent-filter>
+                <!-- MAKE SURE YOU USE UNIQUE ACTIONS FOR YOUR OWN APP (SEE res/strings.xml) -->
+                <action android:name="com.example.tbs.services.UPDATE_PLAN" />
+            </intent-filter>
+        </service>
+        
+         <receiver android:name="com.example.tbs.services.PlanBroadcastReceiver"
+             android:exported="false" >
+            <intent-filter>
+                <action android:name="com.example.tbs.services.NEW_PLAN" />
+            </intent-filter>           
+        </receiver>
+        
+          <!-- BROADCAST RECEIVER THAT CHECKS PHONE NUMBER -->
+             <receiver android:name="com.example.tbs.TbsBroadcastSIMCheck"
+             android:exported="false" >
+            <intent-filter>
+                <action android:name="com.example.tbs.SIM_CHECK" />
+            </intent-filter>           
+        </receiver> 
+
+              <!-- BROADCAST RECEIVER THAT CHECKS NETWORK PROVIDED DATE AND TIME -->
+             <receiver android:name="com.example.tbs.TbsBroadcastDateTime"
+             android:exported="false" >
+            <intent-filter>
+                <action android:name="com.example.tbs.DATE_TIME" />
+            </intent-filter>           
+        </receiver> 
+             
+              <!-- BROADCAST RECEIVER THAT CHECKS NETWORK PROVIDED DATE AND TIME -->
+             <receiver android:name="com.example.tbs.TbsBroadcastRootCheck"
+             android:exported="false" >
+            <intent-filter>
+                <action android:name="com.example.tbs.ROOT_CHECK" />
+            </intent-filter>           
+        </receiver> 
+             
+           <activity
+            android:name="com.example.tbs.TbsActivity"
+            android:label="@string/title_activity_second"
+            android:launchMode="singleTop" 
+ 	   		android:configChanges="keyboardHidden|orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- To start the app from notifications bar -->
+            
+            <intent-filter>
+                <action android:name="com.example.Tbs.NOTIFICATION"/>
+                <category android:name="android.intent.category.DEFAULT"/>                
+            </intent-filter>
+        </activity>  
+        
+        <activity
+            android:name="com.example.tbs.DisableSense"
+            android:launchMode="singleTop">
+            
+            </activity>
+        
+    </application>
+
+</manifest>

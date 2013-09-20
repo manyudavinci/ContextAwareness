@@ -1,0 +1,46 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/Logout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/bg_rings"
+        android:cacheColorHint="#00000fff"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/ImageView1"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="@string/content_descr_spacer" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ImageView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="81dp"
+            android:onClick="onClickLogout"
+            android:text="Afmelden" />
+
+        <TextView
+            android:id="@+id/main_firstline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ImageView1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="82dp"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:text="@string/main_scr_msw_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+
+</merge>
